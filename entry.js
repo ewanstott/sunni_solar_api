@@ -44,11 +44,6 @@ export async function updateGetSolarFunctionsLatAndLon(position) {
   }
 }
 
-// showLocationButton.addEventListener("click", () => {
-//   getSolarLocation();
-//   searchAddress();
-// });
-
 export async function getSolarData(latitude, longitude) {
   //spinner
   rootRef.innerHTML = spinner;
@@ -58,9 +53,9 @@ export async function getSolarData(latitude, longitude) {
 
     // const { latitude, longitude } = data.coords;
 
-    const result = await axios.get(
-      `https://solar.googleapis.com/v1/buildingInsights:findClosest?location.latitude=${latitude}&location.longitude=${longitude}&key=AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8`
-    );
+    // const result = await axios.get(
+    //   `https://solar.googleapis.com/v1/buildingInsights:findClosest?location.latitude=${latitude}&location.longitude=${longitude}&key=AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8`
+    // );
 
     //store strings in array:
     const maxSunshine = `<strong>Maximum Sunshine Hours Per Year</strong> ${Math.floor(

@@ -53,6 +53,20 @@
   background-color: white;
 }
 
+#showLocationButton {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background-color: darkgreen;
+  color: white;
+  border-radius: 50px;
+  padding: 7px;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
 #search {
   border-radius: 50px;
 }
@@ -98,6 +112,7 @@
 .geo-icon {
   top: 50px;
 }
+
 .stats-box {
   height: 200px;
   max-width: 500px;
@@ -120,7 +135,7 @@
   height: 400px;
   width: 100%;
   /* border: 2px solid #fcb045; */
-  border-radius: 5px;
+  /* border-radius: 5px; */
   margin-bottom: 10px;
 }
 /* 
