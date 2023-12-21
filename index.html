@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SUNNI - Saving the planet, one sunbeam at a time</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8&libraries=places&callback=initMap"
+      async
+      defer
+    ></script>
+  </head>
+  <body>
+    <div class="hero">
+      <h1>SUNNI Solar Panel Checker</h1>
+      <h3>Supercharge your roof with solar energy 🌞💪🦸‍♂️</h3>
+      <div class="search-bar">
+        <input
+          type="text"
+          id="addressInput"
+          placeholder="Enter Your Postcode or Town"
+          class="geo-input"
+        />
+
+        <button type="button" id="geo-icon-button" class="geo-button">
+          <img
+            src="/assets/current-location-icon.svg"
+            alt="geo-icon"
+            class="geo-icon-button"
+          />
+        </button>
+      </div>
+      <button type="button" id="showLocationButton">Show Location</button>
+    </div>
+    <div id="map"></div>
+    <div id="details"></div>
+
+    <div class="solar-facts">
+      <h2>Your Solar Stats:</h2>
+      <!-- <p>Bye-bye CO2 emissions, hello green energy! 🌿💡</p> -->
+      <!-- Saving the planet, one sunbeam at a time -->
+    </div>
+    <div id="root"></div>
+    <script type="module" src="entry.js" defer></script>
+  </body>
+</html>

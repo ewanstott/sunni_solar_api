@@ -1,0 +1,181 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+}
+
+:root {
+  --theme-colour: 03d1b2;
+}
+
+.hero {
+  height: 220px;
+  width: auto;
+  background-image: linear-gradient(
+    to right top,
+    #fd1d1d,
+    #fe5618,
+    #fe791e,
+    #fd962e,
+    #fcb045
+  );
+  /* margin-bottom: 10px; */
+}
+.hero > h1 {
+  color: white;
+  padding-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero > h3 {
+  color: white;
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-bar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border: 2px solid white;
+  border-radius: 50px;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  max-width: 500px;
+  padding-right: 5px;
+  background-color: white;
+}
+
+#search {
+  border-radius: 50px;
+}
+.geo-input {
+  flex: 1;
+  /* width: 90%; */
+  height: 3rem;
+  /* border-radius: 0; */
+  border: none;
+  user-select: none;
+  text-decoration: none;
+  background-color: white;
+  text-indent: 15px;
+  border-radius: 50px;
+}
+.geo-input::placeholder {
+  margin-left: 20px;
+}
+
+.geo-button {
+  width: 1.5rem;
+  height: 3rem;
+  background-color: white;
+  /* margin-top: 0.25rem; */
+  /* padding: auto; */
+  /* position: relative; */
+  /* display: flex;
+    justify-content: center;
+    align-items: center; */
+  border: none;
+  cursor: pointer;
+  border-radius: 50px;
+  filter: opacity(50%);
+  color: rgb(87, 86, 86);
+}
+
+.geo-button:hover {
+  filter: opacity(100%);
+  color: rgb(87, 86, 86);
+  cursor: pointer;
+}
+
+.geo-icon {
+  top: 50px;
+}
+.stats-box {
+  height: 200px;
+  max-width: 500px;
+  background-color: white;
+  /* margin-left: 30%; */
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 500px;
+  border-radius: 5px;
+  padding: 5px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.stats-box > .card > h4 {
+  color: grey;
+  font-size: 16px;
+}
+#map {
+  height: 400px;
+  width: 100%;
+  /* border: 2px solid #fcb045; */
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+/* 
+  .search-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .geo-input {
+    padding-left: 30px;
+  }
+  
+  .geo-button {
+    position: absolute;
+    left: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .geo-icon {
+    width: 20px;
+    height: 20px;
+  } */
+
+/* spinner */
+.lds-hourglass {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-hourglass:after {
+  content: " ";
+  display: block;
+  border-radius: 50%;
+  width: 0;
+  height: 0;
+  margin: 8px;
+  box-sizing: border-box;
+  border: 32px solid #03d1b2;
+  border-color: #03d1b2 transparent #03d1b2 transparent;
+  animation: lds-hourglass 1.2s infinite;
+}
+@keyframes lds-hourglass {
+  0% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  50% {
+    transform: rotate(900deg);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  100% {
+    transform: rotate(1800deg);
+  }
+}
