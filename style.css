@@ -57,10 +57,11 @@
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  background-color: darkgreen;
+  background-color: #5cdb5c;
   color: white;
-  border-radius: 50px;
+  border-radius: 10px;
   padding: 7px;
+  padding: 10px;
   margin-left: auto;
   margin-right: auto;
   cursor: pointer;
@@ -138,6 +139,21 @@
   /* border-radius: 5px; */
   margin-bottom: 10px;
 }
+
+.solar-facts {
+  margin: 10px;
+  /* height: 300px;
+  width: auto; */
+  /* background-color: rgb(242, 242, 242); */
+}
+
+#sort {
+  margin: 10px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: end;
+}
+
 /* 
   .search-bar {
     position: relative;
@@ -177,8 +193,8 @@
   height: 0;
   margin: 8px;
   box-sizing: border-box;
-  border: 32px solid #03d1b2;
-  border-color: #03d1b2 transparent #03d1b2 transparent;
+  border: 32px solid #fe791e;
+  border-color: #fe791e transparent #fe791e transparent;
   animation: lds-hourglass 1.2s infinite;
 }
 @keyframes lds-hourglass {

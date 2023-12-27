@@ -49,22 +49,26 @@ export async function getSolarData(latitude, longitude) {
   rootRef.innerHTML = spinner;
 
   try {
-    // const data = await getSolarLocation();
+    const data = await getSolarLocation();
 
-    // const { latitude, longitude } = data.coords;
+    const { latitude, longitude } = data.coords;
 
-    // const result = await axios.get(
-    //   `https://solar.googleapis.com/v1/buildingInsights:findClosest?location.latitude=${latitude}&location.longitude=${longitude}&key=AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8`
-    // );
+    const result = await axios.get(
+      `https://solar.googleapis.com/v1/buildingInsights:findClosest?location.latitude=${latitude}&location.longitude=${longitude}&key=AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8`
+    );
+
+    // Show address/location in DOM here:
+    //add code
 
     //store strings in array:
-    const maxSunshine = `<strong>Maximum Sunshine Hours Per Year</strong> ${Math.floor(
+    const calculationsComplete = `<strong>Calculations Complete ✅</strong>`;
+    const maxSunshine = `<strong>Hours of usable sunlight per year: </strong> ${Math.floor(
       result.data.solarPotential.maxSunshineHoursPerYear
-    )}`;
+    )} 🌞`;
     // const maxSunshine = `<strong>Maximum Sunshine Hours Per Year</strong> Your Roof's Sun Tan Time! ${result.data.solarPotential.maxSunshineHoursPerYear} 🌞😎`;
     const maxArea = `<strong>Maximum area of solar panels your roof can support:</strong> ${Math.floor(
       result.data.solarPotential.wholeRoofStats.areaMeters2
-    )} m2`;
+    )} m2 ⚡`;
     const carbonOffsetFactor = `<strong>Carbon Offset Factor</strong> (tonnes of carbon dioxide offset by installing solar panels on your roof): ${Math.floor(
       result.data.solarPotential.carbonOffsetFactorKgPerMwh
     )} CO2e`;
@@ -75,6 +79,7 @@ export async function getSolarData(latitude, longitude) {
 
     //Array to store strings
     const stringArray = [
+      calculationsComplete,
       maxSunshine,
       maxArea,
       carbonOffsetFactor,
