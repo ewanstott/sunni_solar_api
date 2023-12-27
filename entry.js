@@ -65,17 +65,15 @@ export async function getSolarData(latitude, longitude) {
     const maxSunshine = `<strong>Hours of usable sunlight per year: </strong> ${Math.floor(
       result.data.solarPotential.maxSunshineHoursPerYear
     )} 🌞`;
-    // const maxSunshine = `<strong>Maximum Sunshine Hours Per Year</strong> Your Roof's Sun Tan Time! ${result.data.solarPotential.maxSunshineHoursPerYear} 🌞😎`;
     const maxArea = `<strong>Maximum area of solar panels your roof can support:</strong> ${Math.floor(
       result.data.solarPotential.wholeRoofStats.areaMeters2
     )} m2 ⚡`;
-    const carbonOffsetFactor = `<strong>Carbon Offset Factor</strong> (tonnes of carbon dioxide offset by installing solar panels on your roof): ${Math.floor(
-      result.data.solarPotential.carbonOffsetFactorKgPerMwh
-    )} CO2e`;
-    const pancelCapacityWatts = `<strong>Your Roof's Power Potential: </strong> ${Math.floor(
-      result.data.solarPotential.panelCapacityWatts
-    )} watts ⚡️💪`;
-    // const pancelCapacityWatts = `<strong>Your Roof's Power Potential</strong> / Your Roof's Electrical Bragging Rights! ${result.data.solarPotential.panelCapacityWatts} watts ⚡️💪`;
+    // const carbonOffsetFactor = `<strong>Carbon Offset Factor</strong> (tonnes of carbon dioxide offset by installing solar panels on your roof): ${Math.floor(
+    //   result.data.solarPotential.carbonOffsetFactorKgPerMwh
+    // )} CO2e`;
+    // const pancelCapacityWatts = `<strong>Your Roof's Power Potential: </strong> ${Math.floor(
+    //   result.data.solarPotential.panelCapacityWatts
+    // )} watts ⚡️💪`;
 
     //Array to store strings
     const stringArray = [
