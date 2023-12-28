@@ -5,13 +5,15 @@ import {
   addMarker,
 } from "./googleMapsUtils.js";
 import { getSolarLocation } from "./solarLocation.js";
+// import { energyConsumptionCalculations } from "./costCalulations.js";
 
 //DOM Refs
 const geoIconButton = document.getElementById("geo-icon-button");
 const rootRef = document.getElementById("root");
-const searchRef = document.getElementById("search");
+// const searchRef = document.getElementById("search");
 const spinner = `<div class="lds-hourglass"></div>`;
 const showLocationButton = document.getElementById("showLocationButton");
+// const monthlyBill = document.getElementById("monthlyBill");
 // const getCurrentLocation = document.getElementById("getCurrentLocation");
 
 //Event listener
@@ -24,6 +26,7 @@ geoIconButton.addEventListener("click", () => {
 showLocationButton.addEventListener("click", () => {
   searchAddress();
 });
+// monthlyBill.addEventListener('')
 
 //ADD ERROR MESSAGE If data = undefined - sorry the solar imps haven’t got to your house house
 
@@ -34,8 +37,6 @@ export async function updateGetSolarFunctionsLatAndLon(position) {
     const lon = position[0].geometry.viewport.eb.hi;
     //call getSolarData with lat/lon
     getSolarData(lon, lat);
-    console.log(lat);
-    console.log(lon);
 
     //call searchAddress to update map
     // searchAddress();
@@ -50,32 +51,72 @@ export async function getSolarData(latitude, longitude) {
 
   try {
     const data = await getSolarLocation();
+    // const calculations = await energyConsumptionCalculations(); //temp
 
     const { latitude, longitude } = data.coords;
 
-    // const result = await axios.get(
-    //   `https://solar.googleapis.com/v1/buildingInsights:findClosest?location.latitude=${latitude}&location.longitude=${longitude}&key=AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8`
-    // );
-
+    const result = await axios.get(
+      `https://solar.googleapis.com/v1/buildingInsights:findClosest?location.latitude=${latitude}&location.longitude=${longitude}&key=AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8`
+    );
+    console.log(result);
     // Show address/location in DOM here:
     //add code
 
+    //ENERGY CONSUMPTION
+    //user input
+    const monthlyBill = 100;
+    // Cost of electricity per kWh
+    const costOfElectricity = 0.28; //average UK 2024
+    // Calulate estimated Household Energy Consumption
+    const monthlyKWhEnergyConsumption = monthlyBill / costOfElectricity;
+    // Calculate annual energy consumption
+    const annualKWhEnergyConsumption = monthlyKWhEnergyConsumption * 12;
+    // Calculate annual costs
+    const annualCost = annualKWhEnergyConsumption * costOfElectricity;
+
+    //ENERGY SAVED BY INSTALLING SOLAR PANELS
+    // const carbonOffsetFactor =
+    //   result.data.solarPotential.carbonOffsetFactorKgPerMwh;
+    const yearlyEnergyDcKwh =
+      result.data.solarPotential.maxArrayPanelsCount * 257; // max panel count * 257 (avg. yearlyEnergyDcKwh) //required - yearlyEnergyDcKwh / Panel count. How much solar energy a layout captures over the course of a year
+    const annualSavings = yearlyEnergyDcKwh * costOfElectricity;
+
+    //TOTALS
+    const totalSavings = annualCost - annualSavings;
+    // Calculate total costs over 20 years
+    // const totalSavingsOver20Years = totalSavings * 20;
+    //Cars Equivalent Factor: 1.0 metric ton / 0.2 cars = 5.0 cars/metric ton
+    // const carsEquivalent = carbonOffsetFactor / 4.6; //A typical passenger vehicle emits about 4.6 metric tons of carbon dioxide per year
+    //Trees Equivalent Factor: 1.0 metric ton / 16.6 trees = 0.0602 trees/metric ton
+    // const treesEquivalent = carbonOffsetFactor / 0.0602;
+
     //store strings in array:
-    const calculationsComplete = `<strong>Calculations Complete ✅</strong>`;
-    const maxSunshine = `<strong>Hours of usable sunlight per year: </strong> ${Math.floor(
+    const calculationsComplete = `<strong>✅ Calculations Complete. Your roof data: </strong>`; //try adding ${location}
+    const maxSunshine = `<strong>🌞 Hours of usable sunlight per year: </strong> ${Math.floor(
       result.data.solarPotential.maxSunshineHoursPerYear
-    )} 🌞`;
-    const maxArea = `<strong>Maximum area of solar panels your roof can support:</strong> ${Math.floor(
+    )}`;
+    const maxArea = `<strong>⚡ Maximum area of solar panels your roof can support:</strong> ${Math.floor(
       result.data.solarPotential.wholeRoofStats.areaMeters2
-    )} m2 ⚡`;
+    )} m2`;
+    const totalSavingsOver20Years = `If you install solar panels on your roof, your estimated Total Savings over 20 Years: £${(
+      totalSavings * 20
+    ).toFixed(2)}`;
+
+    // const carsEquivalent = `Estimated cars taken off the road: " ${
+    //   carbonOffsetFactor / 4.6
+    // }`;
+    // const treesEquivalent = `Estimated tree seedlings grown: " ${
+    //   carbonOffsetFactor / 0.0602
+    // }`;
 
     //Array to store strings
     const stringArray = [
       calculationsComplete,
       maxSunshine,
       maxArea,
-      //   carbonOffsetFactor,
-      //   pancelCapacityWatts,
+      totalSavingsOver20Years,
+      //   carsEquivalent,
+      //   treesEquivalent,
     ];
     //clear spinner
     rootRef.innerHTML = "";

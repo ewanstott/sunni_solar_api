@@ -2,6 +2,7 @@ To Do List:
 
 1. First priorty is ALWAYS to get data working on the console
 
+- When you click show lccation, solar API data is pulling data for current location. Need to update this so GetSolarData lat/lon pulls correctly
 - Calculate solar costs and savings for non-US locations
 - Add some sort of 'to do app' features i.e. ability to sort or something (look at other projects) - ask Jon/Russell for ideas also
 
