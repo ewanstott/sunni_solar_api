@@ -147,12 +147,16 @@
   /* background-color: rgb(242, 242, 242); */
 }
 
-#sort {
+#root {
+  margin: 10px;
+}
+
+/* #sort {
   margin: 10px;
   display: flex;
   justify-content: flex-end;
   align-items: end;
-}
+} */
 
 /* 
   .search-bar {

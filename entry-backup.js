@@ -53,9 +53,9 @@ export async function getSolarData(latitude, longitude) {
 
     const { latitude, longitude } = data.coords;
 
-    // const result = await axios.get(
-    //   `https://solar.googleapis.com/v1/buildingInsights:findClosest?location.latitude=${latitude}&location.longitude=${longitude}&key=AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8`
-    // );
+    const result = await axios.get(
+      `https://solar.googleapis.com/v1/buildingInsights:findClosest?location.latitude=${latitude}&location.longitude=${longitude}&key=AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8`
+    );
 
     // Show address/location in DOM here:
     //add code
@@ -68,14 +68,20 @@ export async function getSolarData(latitude, longitude) {
     const maxArea = `<strong>Maximum area of solar panels your roof can support:</strong> ${Math.floor(
       result.data.solarPotential.wholeRoofStats.areaMeters2
     )} m2 ⚡`;
+    // const carbonOffsetFactor = `<strong>Carbon Offset Factor</strong> (tonnes of carbon dioxide offset by installing solar panels on your roof): ${Math.floor(
+    //   result.data.solarPotential.carbonOffsetFactorKgPerMwh
+    // )} CO2e`;
+    // const pancelCapacityWatts = `<strong>Your Roof's Power Potential: </strong> ${Math.floor(
+    //   result.data.solarPotential.panelCapacityWatts
+    // )} watts ⚡️💪`;
 
     //Array to store strings
     const stringArray = [
       calculationsComplete,
       maxSunshine,
       maxArea,
-      //   carbonOffsetFactor,
-      //   pancelCapacityWatts,
+      carbonOffsetFactor,
+      pancelCapacityWatts,
     ];
     //clear spinner
     rootRef.innerHTML = "";
