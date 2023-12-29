@@ -72,14 +72,15 @@ export async function getSolarData(latitude, longitude) {
     // Calculate annual energy consumption
     const annualKWhEnergyConsumption = monthlyKWhEnergyConsumption * 12;
     // Calculate annual costs
-    const annualCost = annualKWhEnergyConsumption * costOfElectricity;
+    const annualCost = annualKWhEnergyConsumption * costOfElectricity; //1200
 
     //ENERGY SAVED BY INSTALLING SOLAR PANELS
     // const carbonOffsetFactor =
     //   result.data.solarPotential.carbonOffsetFactorKgPerMwh;
     const yearlyEnergyDcKwh =
-      result.data.solarPotential.maxArrayPanelsCount * 257; // max panel count * 257 (avg. yearlyEnergyDcKwh) //required - yearlyEnergyDcKwh / Panel count. How much solar energy a layout captures over the course of a year
-    const annualSavings = yearlyEnergyDcKwh * costOfElectricity;
+      result.data.solarPotential.maxArrayPanelsCount * 257; //70*257 = 17990
+    // max panel count * 257 (avg. yearlyEnergyDcKwh) //required - yearlyEnergyDcKwh / Panel count. How much solar energy a layout captures over the course of a year
+    const annualSavings = yearlyEnergyDcKwh * costOfElectricity; // 17990 * 0.28 = 5,037.2
 
     //TOTALS
     const totalSavings = annualCost - annualSavings;
@@ -98,9 +99,9 @@ export async function getSolarData(latitude, longitude) {
     const maxArea = `<strong>⚡ Maximum area of solar panels your roof can support:</strong> ${Math.floor(
       result.data.solarPotential.wholeRoofStats.areaMeters2
     )} m2`;
-    const totalSavingsOver20Years = `If you install solar panels on your roof, your estimated Total Savings over 20 Years: £${(
-      totalSavings * 20
-    ).toFixed(2)}`;
+    const totalSavingsOver20Years = `<strong>🤑 If you install solar panels on your roof, your estimated Total Savings over 20 Years: </strong> £${Math.abs(
+      Math.floor(totalSavings * 20)
+    )}`;
 
     // const carsEquivalent = `Estimated cars taken off the road: " ${
     //   carbonOffsetFactor / 4.6
