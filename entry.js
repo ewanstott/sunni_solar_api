@@ -17,14 +17,31 @@ const showLocationButton = document.getElementById("showLocationButton");
 // const getCurrentLocation = document.getElementById("getCurrentLocation");
 
 //Event listener
-geoIconButton.addEventListener("click", () => {
-  getCurrentLocation(); // pulls users location on map using current location
-  getSolarLocation(); //pull solar data for users current location
+geoIconButton.addEventListener("click", async () => {
+  try {
+    await getCurrentLocation(); // pulls users location on map using current location from googleMapsUtils.js
+    await getSolarLocation(); //pull solar data for users current position
+  } catch (error) {
+    console.error("Error:", error);
+  }
 });
 
+//clear search results for every new search
+//show in DOM the search place or GEO Location
+// Useability -> add progress bar or Spinner for when user searches
+// Add some spacing for 300px
+// Look at Weather API -> e.g. birmingham search, show options for specific location
+// Use Lon & Lat from Google Map Search, use the lon lat to pas to Solar API
+
 //showLocationButton to call getSolarData with updated lat / lon
-showLocationButton.addEventListener("click", () => {
-  searchAddress();
+showLocationButton.addEventListener("click", async () => {
+  try {
+    await searchAddress(); // Update the map location based on the searched address
+
+    // await getSolarLocation();
+  } catch (error) {
+    console.error("Error:", error);
+  }
 });
 // monthlyBill.addEventListener('')
 
@@ -33,10 +50,11 @@ showLocationButton.addEventListener("click", () => {
 export async function updateGetSolarFunctionsLatAndLon(position) {
   try {
     // const position = await getSolarLocation();
-    const lat = position[0].geometry.viewport.La.hi;
-    const lon = position[0].geometry.viewport.eb.hi;
+    const lat = position[0].geometry.location.lat();
+    const lon = position[0].geometry.location.lng();
+
     //call getSolarData with lat/lon
-    getSolarData(lon, lat);
+    getSolarData(lat, lon);
 
     //call searchAddress to update map
     // searchAddress();
@@ -45,26 +63,34 @@ export async function updateGetSolarFunctionsLatAndLon(position) {
   }
 }
 
-export async function getSolarData(latitude, longitude) {
+//split into multimple funcitons - calulations, update DOM,
+
+export async function getSolarData(lat, lon) {
   //spinner
   rootRef.innerHTML = spinner;
-
+  let latitude, longitude;
   try {
-    const data = await getSolarLocation();
-    // const calculations = await energyConsumptionCalculations(); //temp
-
-    const { latitude, longitude } = data.coords;
+    if (!lat || !lon) {
+      const data = await getSolarLocation();
+      latitude = data.coords.latitude;
+      longitude = data.coords.longitude;
+    } else {
+      latitude = lat;
+      longitude = lon;
+    }
 
     const result = await axios.get(
       `https://solar.googleapis.com/v1/buildingInsights:findClosest?location.latitude=${latitude}&location.longitude=${longitude}&key=AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8`
     );
-    console.log(result);
+    console.log(
+      `https://solar.googleapis.com/v1/buildingInsights:findClosest?location.latitude=${latitude}&location.longitude=${longitude}&key=AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8`
+    );
     // Show address/location in DOM here:
     //add code
 
     //ENERGY CONSUMPTION
     //user input
-    const monthlyBill = 100;
+    const monthlyBill = 100; // Use getElementById -> drop down box
     // Cost of electricity per kWh
     const costOfElectricity = 0.28; //average UK 2024
     // Calulate estimated Household Energy Consumption
