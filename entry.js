@@ -75,8 +75,6 @@ export async function getSolarData(latitude, longitude) {
     const annualCost = annualKWhEnergyConsumption * costOfElectricity; //1200
 
     //ENERGY SAVED BY INSTALLING SOLAR PANELS
-    // const carbonOffsetFactor =
-    //   result.data.solarPotential.carbonOffsetFactorKgPerMwh;
     const yearlyEnergyDcKwh =
       result.data.solarPotential.maxArrayPanelsCount * 257; //70*257 = 17990
     // max panel count * 257 (avg. yearlyEnergyDcKwh) //required - yearlyEnergyDcKwh / Panel count. How much solar energy a layout captures over the course of a year
@@ -84,12 +82,6 @@ export async function getSolarData(latitude, longitude) {
 
     //TOTALS
     const totalSavings = annualCost - annualSavings;
-    // Calculate total costs over 20 years
-    // const totalSavingsOver20Years = totalSavings * 20;
-    //Cars Equivalent Factor: 1.0 metric ton / 0.2 cars = 5.0 cars/metric ton
-    // const carsEquivalent = carbonOffsetFactor / 4.6; //A typical passenger vehicle emits about 4.6 metric tons of carbon dioxide per year
-    //Trees Equivalent Factor: 1.0 metric ton / 16.6 trees = 0.0602 trees/metric ton
-    // const treesEquivalent = carbonOffsetFactor / 0.0602;
 
     //store strings in array:
     const calculationsComplete = `<strong>✅ Calculations Complete. Your roof data: </strong>`; //try adding ${location}
@@ -103,12 +95,12 @@ export async function getSolarData(latitude, longitude) {
       Math.floor(totalSavings * 20)
     )}`;
 
-    // const carsEquivalent = `Estimated cars taken off the road: " ${
-    //   carbonOffsetFactor / 4.6
-    // }`;
-    // const treesEquivalent = `Estimated tree seedlings grown: " ${
-    //   carbonOffsetFactor / 0.0602
-    // }`;
+    const carsEquivalent = `<strong>🚗 Estimated cars taken off the road:</strong> ${Math.floor(
+      result.data.solarPotential.carbonOffsetFactorKgPerMwh / 4.6
+    )}`;
+    const treesEquivalent = `<strong>🌲 Estimated tree seedlings grown:</strong> ${Math.floor(
+      result.data.solarPotential.carbonOffsetFactorKgPerMwh / 0.0602
+    )}`;
 
     //Array to store strings
     const stringArray = [
@@ -116,8 +108,8 @@ export async function getSolarData(latitude, longitude) {
       maxSunshine,
       maxArea,
       totalSavingsOver20Years,
-      //   carsEquivalent,
-      //   treesEquivalent,
+      carsEquivalent,
+      treesEquivalent,
     ];
     //clear spinner
     rootRef.innerHTML = "";
