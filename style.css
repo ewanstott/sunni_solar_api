@@ -8,9 +8,12 @@
 :root {
   --theme-colour: 03d1b2;
 }
+/* .body {
+  background-color: #fcb045;
+} */
 
 .hero {
-  height: 220px;
+  height: 250px;
   width: auto;
   background-image: linear-gradient(
     to right top,
@@ -20,14 +23,17 @@
     #fd962e,
     #fcb045
   );
-  /* margin-bottom: 10px; */
+  padding-left: 5px;
+  padding-right: 5px;
 }
 .hero > h1 {
   color: white;
-  padding-top: 30px;
+  padding-top: 10px;
+  padding-left: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 
 .hero > h3 {
@@ -36,6 +42,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-left: 5px;
+  text-align: center;
 }
 
 .search-bar {
@@ -112,6 +120,10 @@
 
 .geo-icon {
   top: 50px;
+}
+
+.prompt {
+  margin-bottom: 10px;
 }
 
 .stats-box {
