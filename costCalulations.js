@@ -31,23 +31,3 @@ export function calculateTotalSavings(annualCost, annualSavings) {
   const totalSavings = parseInt(annualCost - annualSavings);
   return totalSavings;
 }
-
-// export function calculateTotalSavings(annualCost, annualSavings) {
-//   // Check if annualCost is a valid number
-//   if (isNaN(annualCost) || annualCost === 0 || annualCost === undefined) {
-//     console.error("Invalid annual cost value:", annualCost);
-//     // Handle the error or return an appropriate value
-//     return 0; // Set totalSavings to 0
-//   }
-
-//   const totalSavings = annualCost - annualSavings;
-
-//   // Check if totalSavings is a valid number
-//   if (isNaN(totalSavings)) {
-//     console.error("Invalid total savings value:", totalSavings);
-//     // Handle the error or return an appropriate value
-//     return 0; // Set totalSavings to 0
-//   }
-
-//   return totalSavings;
-// }

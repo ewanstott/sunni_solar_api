@@ -47,11 +47,15 @@ showLocationButton.addEventListener("click", async () => {
 //   // Get the selected value from the dropdown
 //   selectedMonthlyBill = parseFloat(e.target.value);
 // });
-let selectedMonthlyBill;
+let selectedMonthlyBill = 100;
 monthlyBillDropDown.addEventListener("change", (e) => {
   // Get the selected value from the dropdown
   selectedMonthlyBill = parseFloat(e.target.value);
-  console.log("Selected Monthly Bill:", selectedMonthlyBill);
+  // Check if selectedMonthlyBill is defined
+  if (selectedMonthlyBill === undefined) {
+    console.error("Selected monthly bill is not defined.");
+    return;
+  }
 });
 
 //ADD ERROR MESSAGE If data = undefined - sorry the solar imps haven’t got to your house house
@@ -61,12 +65,6 @@ export async function updateGetSolarFunctionsLatAndLon(position) {
     // const position = await getSolarLocation();
     const lat = position[0].geometry.location.lat();
     const lon = position[0].geometry.location.lng();
-
-    // Check if selectedMonthlyBill is defined
-    if (selectedMonthlyBill === undefined) {
-      console.error("Selected monthly bill is not defined.");
-      return;
-    }
 
     //call getSolarData with lat/lon
     getSolarData(lat, lon, selectedMonthlyBill);
@@ -122,23 +120,24 @@ export async function getSolarData(lat, lon, selectedMonthlyBill) {
     console.log("selectedMonthlyBill:", selectedMonthlyBill);
 
     //store strings in array:
-    const calculationsComplete = `<strong>✅ Calculations Complete. Your roof data: </strong>`; //try adding ${location}
-    const maxSunshine = `<strong>🌞 Hours of usable sunlight per year: </strong> ${Math.floor(
+    const calculationsComplete = `<div class="string"> <strong>✅ Calculations Complete. Your roof data: </strong></div>`; //try adding ${location}
+    const maxSunshine = `<div>🌞 Hours of usable sunlight per year: <strong> ${Math.floor(
       result.data.solarPotential.maxSunshineHoursPerYear
-    )}`;
-    const maxArea = `<strong>⚡ Maximum area of solar panels your roof can support:</strong> ${Math.floor(
+    )}</strong></div>`;
+    const maxArea = `<div>⚡ Maximum area of solar panels your roof can support:<strong> ${Math.floor(
       result.data.solarPotential.wholeRoofStats.areaMeters2
-    )} m2`;
-    const totalSavingsOver20Years = `<strong>🤑 If you install solar panels on your roof, your estimated Total Savings over 20 Years: </strong> £${Math.abs(
+    )} m2 </strong></div>`;
+    const totalSavingsOver20Years = `<div>🤑 If you install solar panels on your roof, your estimated Total Savings over 20 Years: <strong> £${Math.abs(
       totalSavings * 20
-    )}`;
+    )}</strong></div>`;
 
-    const carsEquivalent = `<strong>🚗 Estimated cars taken off the road:</strong> ${Math.floor(
+    const carsEquivalent = `<div class="string" strong><strong>Environmental Impact:</strong></div> 
+    <div>🚗 Estimated cars taken off the road: <strong>${Math.floor(
       result.data.solarPotential.carbonOffsetFactorKgPerMwh / 4.6
-    )}`;
-    const treesEquivalent = `<strong>🌲 Estimated tree seedlings grown:</strong> ${Math.floor(
+    )}</strong></div>`;
+    const treesEquivalent = `<div class="string">🌲 Estimated tree seedlings grown:<strong> ${Math.floor(
       result.data.solarPotential.carbonOffsetFactorKgPerMwh / 0.0602
-    )}`;
+    )}</strong></div>`;
 
     //Array to store strings
     const stringArray = [

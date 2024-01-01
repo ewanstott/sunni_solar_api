@@ -13,7 +13,7 @@
 } */
 
 .hero {
-  height: 250px;
+  height: auto;
   width: auto;
   background-image: linear-gradient(
     to right top,
@@ -25,6 +25,7 @@
   );
   padding-left: 5px;
   padding-right: 5px;
+  padding-bottom: 10px;
 }
 .hero > h1 {
   color: white;
@@ -60,18 +61,25 @@
   padding-right: 5px;
   background-color: white;
 }
-
-#showLocationButton {
+.button-container {
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
+}
+#showLocationButton {
+  margin: 0 2.5px;
   background-color: #5cdb5c;
   color: white;
   border-radius: 10px;
   padding: 7px;
-  padding: 10px;
-  margin-left: auto;
-  margin-right: auto;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+#resetButton {
+  margin: 0 2.5px;
+  color: black;
+  border-radius: 10px;
+  padding: 7px;
   cursor: pointer;
   transition: transform 0.3s ease;
 }
@@ -156,11 +164,35 @@
   margin: 10px;
   /* height: 300px;
   width: auto; */
-  /* background-color: rgb(242, 242, 242); */
 }
 
 #root {
   margin: 10px;
+  padding: 5px;
+  /* background-color: rgb(242, 242, 242); */
+}
+
+.questions {
+  height: auto;
+  width: auto;
+  background-color: #ececec;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+#monthlyBill {
+  margin-top: 5px;
+  padding: 5px;
+  border-radius: 5px;
+}
+.string {
+  height: auto;
+  width: auto;
+  border: grey;
+  /* background-color: #fcb045; */
+  /* padding: 10px; */
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
 
 /* #sort {

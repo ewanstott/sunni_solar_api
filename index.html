@@ -39,23 +39,28 @@
       <!-- <button class="button is-light is-primary is-focused">
         Show Location
       </button> -->
-
-      <button type="button" id="showLocationButton">
-        <strong>Show Location</strong>
-      </button>
+      <div class="button-container">
+        <button type="button" id="showLocationButton">
+          <strong>Show Location</strong>
+        </button>
+        <button type="button" id="resetButton">
+          <strong>Reset</strong>
+        </button>
+      </div>
     </div>
     <div id="map"></div>
     <div id="details"></div>
 
     <div class="solar-facts">
       <!-- <h2>Your Solar Stats:</h2> -->
-      <div id="root"></div>
+
       <div class="prompt">
         <h4>
           Please enable location services or enter your address to get
           started...
         </h4>
       </div>
+
       <div class="questions">
         <h4>
           To help us fine tune your information, whats your average monthly
@@ -71,10 +76,8 @@
           <option value="175">£175</option>
           <option value="200">£200</option>
         </select>
-        <div id="root2"></div>
       </div>
-      <!-- <p>Bye-bye CO2 emissions, hello green energy! 🌿💡</p> -->
-      <!-- Saving the planet, one sunbeam at a time -->
+      <div id="root"></div>
     </div>
     <!-- <select id="sort">
       <option value="Default">Default</option>
