@@ -5,10 +5,38 @@ import { getSolarData } from "./entry.js";
 let map; // Declare the map variable
 let marker; // Declare the marker variable
 
+// export function initMap() {
+//   map = new google.maps.Map(document.getElementById("map"), {
+//     zoom: 10,
+//     center: { lat: 51.5074, lng: -0.1278 }, // Default center (London)
+//   });
+// }
+
 export function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 10,
     center: { lat: 51.5074, lng: -0.1278 }, // Default center (London)
+  });
+
+  // Create an autocomplete object for the input
+  const addressInput = document.getElementById("addressInput");
+  const autocomplete = new google.maps.places.Autocomplete(addressInput);
+
+  // Set the bounds to the map's viewport
+  autocomplete.bindTo("bounds", map);
+
+  // Listen for the event when a user selects a prediction from the dropdown
+  autocomplete.addListener("place_changed", () => {
+    const place = autocomplete.getPlace();
+    if (place.geometry) {
+      const location = place.geometry.location;
+      map.setCenter(location);
+      map.setZoom(15);
+      addMarker(location);
+      updateGetSolarFunctionsLatAndLon([place]);
+    } else {
+      console.error("Invalid place details");
+    }
   });
 }
 
@@ -23,8 +51,6 @@ export function getCurrentLocation() {
           };
           map.setCenter(currentLocation);
           map.setZoom(15); // You can adjust the zoom level
-          // console.log(position.coords.latitude);
-          // console.log(position.coords.longitude);
           // Add a marker for the current location
           addMarker(currentLocation);
           getSolarData(
@@ -83,4 +109,9 @@ export function addMarker(location) {
     title: "Selected Location",
   });
 }
+
+export function resetMap() {
+  location.reload();
+}
+
 // initMap();

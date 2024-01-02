@@ -3,6 +3,7 @@
   margin: 0;
   box-sizing: border-box;
   font-family: "Montserrat", sans-serif;
+  text-decoration: none;
 }
 
 :root {
@@ -157,13 +158,16 @@
   width: 100%;
   /* border: 2px solid #fcb045; */
   /* border-radius: 5px; */
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 
 .solar-facts {
-  margin: 10px;
-  /* height: 300px;
-  width: auto; */
+  background-color: #f7f5f1;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 500px;
+  width: auto;
 }
 
 #root {
@@ -175,7 +179,7 @@
 .questions {
   height: auto;
   width: auto;
-  background-color: #ececec;
+  background-color: #dad9d7;
   padding: 5px;
   border-radius: 5px;
 }
@@ -188,12 +192,21 @@
 .string {
   height: auto;
   width: auto;
-  border: grey;
-  /* background-color: #fcb045; */
-  /* padding: 10px; */
   border-radius: 5px;
   margin-bottom: 10px;
 }
+/* 
+.green {
+  background-color: #adffac;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.orange {
+  background-color: #fad98d;
+  border-radius: 5px;
+  padding: 5px;
+} */
 
 /* #sort {
   margin: 10px;

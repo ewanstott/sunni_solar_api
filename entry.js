@@ -3,6 +3,7 @@ import {
   getCurrentLocation,
   searchAddress,
   addMarker,
+  resetMap,
 } from "./googleMapsUtils.js";
 import { getSolarLocation } from "./solarLocation.js";
 import {
@@ -41,6 +42,11 @@ showLocationButton.addEventListener("click", async () => {
   }
 });
 
+resetButton.addEventListener("click", () => {
+  document.getElementById("addressInput").value = "";
+  resetMap();
+});
+
 // // Monthly bill dropdown change
 // let selectedMonthlyBill;
 // monthlyBillDropDown.addEventListener("change", (e) => {
@@ -62,13 +68,13 @@ monthlyBillDropDown.addEventListener("change", (e) => {
 
 export async function updateGetSolarFunctionsLatAndLon(position) {
   try {
-    // const position = await getSolarLocation();
+    const place = position[0];
     const lat = position[0].geometry.location.lat();
     const lon = position[0].geometry.location.lng();
 
     //call getSolarData with lat/lon
-    getSolarData(lat, lon, selectedMonthlyBill);
-
+    getSolarData(lat, lon, selectedMonthlyBill, place);
+    console.log(place.formatted_address);
     //call searchAddress to update map
     // searchAddress();
   } catch (error) {
@@ -76,7 +82,7 @@ export async function updateGetSolarFunctionsLatAndLon(position) {
   }
 }
 
-export async function getSolarData(lat, lon, selectedMonthlyBill) {
+export async function getSolarData(lat, lon, selectedMonthlyBill, place) {
   //spinner
   rootRef.innerHTML = spinner;
   let latitude, longitude;
@@ -94,10 +100,13 @@ export async function getSolarData(lat, lon, selectedMonthlyBill) {
     const result = await axios.get(
       `https://solar.googleapis.com/v1/buildingInsights:findClosest?location.latitude=${latitude}&location.longitude=${longitude}&key=AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8`
     );
-    // Show address/location in DOM here:
-    //add code
 
-    // const monthlyBill = 100;
+    // if (!result.data || !result.data.solarPotential) {
+    //   //   throw new Error("No solar data available for this location");
+    //   rootRef.innerHTML = `Uh-oh! ${
+    //     err.message || "Something went wrong."
+    //   } Please try again later.`;
+    // }
 
     // ENERGY CONSUMPTION CALCULATIONS
     const {
@@ -105,7 +114,6 @@ export async function getSolarData(lat, lon, selectedMonthlyBill) {
       annualKWhEnergyConsumption,
       annualCost,
     } = calculateEnergyConsumption(selectedMonthlyBill, costOfElectricity);
-    console.log(selectedMonthlyBill, costOfElectricity);
     // ENERGY SAVINGS CALCULATIONS
     const { yearlyEnergyDcKwh, annualSavings } = calculateEnergySaved(
       result.data.solarPotential.maxArrayPanelsCount,
@@ -114,13 +122,11 @@ export async function getSolarData(lat, lon, selectedMonthlyBill) {
 
     // TOTAL SAVINGS CALCULATION
     const totalSavings = calculateTotalSavings(annualCost, annualSavings);
-    console.log("Total Savings:", totalSavings);
-    console.log("Annual Cost:", annualCost);
-    console.log("Annual Savings:", annualSavings);
-    console.log("selectedMonthlyBill:", selectedMonthlyBill);
+
+    console.log(result.data.solarPotential.solarPanels);
 
     //store strings in array:
-    const calculationsComplete = `<div class="string"> <strong>✅ Calculations Complete. Your roof data: </strong></div>`; //try adding ${location}
+    const calculationsComplete = `<div class="string"> <strong>✅ Calculations Complete. Your roof data for: ${place.formatted_address} </strong></div>`; //try adding ${location}
     const maxSunshine = `<div>🌞 Hours of usable sunlight per year: <strong> ${Math.floor(
       result.data.solarPotential.maxSunshineHoursPerYear
     )}</strong></div>`;
@@ -129,9 +135,9 @@ export async function getSolarData(lat, lon, selectedMonthlyBill) {
     )} m2 </strong></div>`;
     const totalSavingsOver20Years = `<div>🤑 If you install solar panels on your roof, your estimated Total Savings over 20 Years: <strong> £${Math.abs(
       totalSavings * 20
-    )}</strong></div>`;
+    )}</strong></div><br>`;
 
-    const carsEquivalent = `<div class="string" strong><strong>Environmental Impact:</strong></div> 
+    const carsEquivalent = `<div class="string"> <strong>Environmental Impact of Installing Solar Panels on your Roof:</strong></div>
     <div>🚗 Estimated cars taken off the road: <strong>${Math.floor(
       result.data.solarPotential.carbonOffsetFactorKgPerMwh / 4.6
     )}</strong></div>`;
@@ -153,7 +159,7 @@ export async function getSolarData(lat, lon, selectedMonthlyBill) {
 
     displayStatsInDom(stringArray, rootRef);
   } catch (err) {
-    rootRef.innerHTML = `Uh-oh! It seems like CO2, the sneaky villain, has put our Solar API to sleep! 😱☀️ Don't worry, our superhero developers are on the case. Please try again later and let's show that CO2 who's boss! 💪🌍 #CO2VSVictory`;
+    rootRef.innerHTML = `Uh-oh! It seems like there is no solar data available for this location yet!`;
   }
 }
 
