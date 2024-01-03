@@ -123,25 +123,23 @@ export async function getSolarData(lat, lon, selectedMonthlyBill, place) {
     // TOTAL SAVINGS CALCULATION
     const totalSavings = calculateTotalSavings(annualCost, annualSavings);
 
-    console.log(result.data.solarPotential.solarPanels);
-
     //store strings in array:
-    const calculationsComplete = `<div class="string"> <strong>✅ Calculations Complete. Your roof data for: ${place.formatted_address} </strong></div>`; //try adding ${location}
-    const maxSunshine = `<div>🌞 Hours of usable sunlight per year: <strong> ${Math.floor(
+    const calculationsComplete = `<div class="card1"> <strong>✅ Calculations Complete. Your roof data for: ${place.formatted_address} </strong></div>`;
+    const maxSunshine = `<div class="card1"> 🌞 Hours of usable sunlight per year: <strong> ${Math.floor(
       result.data.solarPotential.maxSunshineHoursPerYear
     )}</strong></div>`;
-    const maxArea = `<div>⚡ Maximum area of solar panels your roof can support:<strong> ${Math.floor(
+    const maxArea = `<div class="card1"> ⚡ Maximum area of solar panels your roof can support:<strong> ${Math.floor(
       result.data.solarPotential.wholeRoofStats.areaMeters2
     )} m2 </strong></div>`;
-    const totalSavingsOver20Years = `<div>🤑 If you install solar panels on your roof, your estimated Total Savings over 20 Years: <strong> £${Math.abs(
+    const totalSavingsOver20Years = `<div class="card1"> 🤑 If you install solar panels on your roof, your estimated Total Savings over 20 Years: <strong> £${Math.abs(
       totalSavings * 20
     )}</strong></div><br>`;
 
-    const carsEquivalent = `<div class="string"> <strong>Environmental Impact of Installing Solar Panels on your Roof:</strong></div>
-    <div>🚗 Estimated cars taken off the road: <strong>${Math.floor(
+    const carsEquivalent = `<div class="card2"><strong>Environmental Impact of Installing Solar Panels on your Roof:</strong></div>
+    <div class="card2">🚗 Estimated cars taken off the road: <strong>${Math.floor(
       result.data.solarPotential.carbonOffsetFactorKgPerMwh / 4.6
     )}</strong></div>`;
-    const treesEquivalent = `<div class="string">🌲 Estimated tree seedlings grown:<strong> ${Math.floor(
+    const treesEquivalent = `<div class="card2">🌲 Estimated tree seedlings grown:<strong> ${Math.floor(
       result.data.solarPotential.carbonOffsetFactorKgPerMwh / 0.0602
     )}</strong></div>`;
 

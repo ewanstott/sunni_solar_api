@@ -1,14 +1,6 @@
 To Do List:
 
-30th Dec:
-
-//clear search results for every new search
-//show in DOM the search place or GEO Location
-// Useability -> add progress bar or Spinner for when user searches
-// Add some spacing for 300px
-// Look at Weather API -> e.g. birmingham search, show options for specific location
-// Use Lon & Lat from Google Map Search, use the lon lat to pas to Solar API
-// clear data after each use
+add data layer
 
 1. First priorty is ALWAYS to get data working on the console
 
