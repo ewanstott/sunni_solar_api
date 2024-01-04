@@ -21,6 +21,8 @@ const rootRef = document.getElementById("root");
 const spinner = `<div class="lds-hourglass"></div>`;
 const showLocationButton = document.getElementById("showLocationButton");
 const monthlyBillDropDown = document.getElementById("monthlyBill");
+const card1Container = document.getElementById("card1-container");
+const card2Container = document.getElementById("card2-container");
 
 //Event listeners
 geoIconButton.addEventListener("click", async () => {
@@ -124,6 +126,7 @@ export async function getSolarData(lat, lon, selectedMonthlyBill, place) {
     const totalSavings = calculateTotalSavings(annualCost, annualSavings);
 
     //store strings in array:
+    //card1
     const calculationsComplete = `<div class="card1"> <strong>✅ Calculations Complete. Your roof data for: ${place.formatted_address} </strong></div>`;
     const maxSunshine = `<div class="card1"> 🌞 Hours of usable sunlight per year: <strong> ${Math.floor(
       result.data.solarPotential.maxSunshineHoursPerYear
@@ -134,12 +137,12 @@ export async function getSolarData(lat, lon, selectedMonthlyBill, place) {
     const totalSavingsOver20Years = `<div class="card1"> 🤑 If you install solar panels on your roof, your estimated Total Savings over 20 Years: <strong> £${Math.abs(
       totalSavings * 20
     )}</strong></div><br>`;
-
+    //card2
     const carsEquivalent = `<div class="card2"><strong>Environmental Impact of Installing Solar Panels on your Roof:</strong></div>
-    <div class="card2">🚗 Estimated cars taken off the road: <strong>${Math.floor(
+    <div class="card2">🚗 Estimated cars taken off the road (for 1 yr): <strong>${Math.floor(
       result.data.solarPotential.carbonOffsetFactorKgPerMwh / 4.6
     )}</strong></div>`;
-    const treesEquivalent = `<div class="card2">🌲 Estimated tree seedlings grown:<strong> ${Math.floor(
+    const treesEquivalent = `<div class="card2">🌲 Estimated tree seedlings grown (for 10 years):<strong> ${Math.floor(
       result.data.solarPotential.carbonOffsetFactorKgPerMwh / 0.0602
     )}</strong></div>`;
 
@@ -152,6 +155,7 @@ export async function getSolarData(lat, lon, selectedMonthlyBill, place) {
       carsEquivalent,
       treesEquivalent,
     ];
+
     //clear spinner
     rootRef.innerHTML = "";
 

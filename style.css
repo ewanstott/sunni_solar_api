@@ -137,11 +137,10 @@
   text-align: center;
 }
 
-.stats-box {
+/* .stats-box {
   height: 200px;
   max-width: 500px;
   background-color: white;
-  /* margin-left: 30%; */
   margin-left: auto;
   margin-right: auto;
   max-width: 500px;
@@ -154,7 +153,7 @@
 .stats-box > .card > h4 {
   color: grey;
   font-size: 16px;
-}
+} */
 #map {
   height: 400px;
   width: 100%;
@@ -179,26 +178,59 @@
 }
 
 .questions {
-  height: auto;
-  width: auto;
+  /* height: auto; */
+  /* width: auto; */
+  padding: 10px;
   background-color: #ffffff;
   border-radius: 5px;
+  border: 1px solid rgb(196, 195, 195);
+  box-shadow: 0 4px 8px rgba(22, 22, 22, 0.1);
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
 }
 
 #monthlyBill {
   margin-top: 5px;
   padding: 5px;
   border-radius: 5px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
 }
 
-.card1,
+/* .card1,
 .card2 {
   background-color: #ffffff;
-  border: 1px solid rgb(50, 50, 50);
   padding: 10px;
+  border-radius: 1px;
+  border: 1px solid rgb(196, 195, 195);
   box-shadow: 0 4px 8px rgba(22, 22, 22, 0.1);
+} */
+
+/* .card-container {
+  display: flex; 
+  justify-content: space-between;
+} */
+
+/* .card1,
+.card2 */
+.card-container {
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid rgb(196, 195, 195);
+  box-shadow: 0 4px 8px rgba(22, 22, 22, 0.1);
+  flex: 1;
+  margin: 5px;
 }
 
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  background-color: #f9f9f9;
+}
 /* 
 .green {
   background-color: #adffac;

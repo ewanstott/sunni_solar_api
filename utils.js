@@ -6,5 +6,6 @@ export function displayStatsInDom(stringArray, rootRef) {
     const paragraph = document.createElement("p"); // creates a new HTML paragraph element (<p>).
     paragraph.innerHTML = str; //sets the text content of the paragraph element to the current string (str) from the array.
     rootRef.appendChild(paragraph); //appends the new paragraph to the rootRef
+    rootRef.classList.add("card-container");
   });
 }
