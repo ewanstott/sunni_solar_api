@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SUNNI - Saving the planet, one sunbeam at a time</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/geotiff"></script>
+
     <!-- <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
@@ -49,10 +51,10 @@
         </button>
       </div>
       <div class="prompt">
-        <h5>
+        <h4>
           Please enable location services or enter your address to get
           started...
-        </h5>
+        </h4>
       </div>
     </div>
     <div id="map"></div>
@@ -69,10 +71,12 @@
       </div> -->
 
       <div class="questions">
-        <h4>
-          To help us fine tune your information, whats your average monthly
-          electric bill?
-        </h4>
+        <p>
+          To help us fine tune your information, please enter your
+          <strong>average monthly electric bill</strong> (this helps us provide
+          more accurate solar energy calculations!)
+        </p>
+
         <select name="monthlyBill" id="monthlyBill">
           <option value="100">Default</option>
           <option value="50">£50</option>
@@ -83,13 +87,17 @@
           <option value="175">£175</option>
           <option value="200">£200</option>
         </select>
+        <button type="button" id="showLocationButton2">
+          <strong>Customize my results</strong>
+        </button>
       </div>
       <div id="root"></div>
+      <!-- <div id="solarImage"></div> -->
+      <!-- <div id="image-container"></div>
+      <script src="imageimport.js"></script> -->
     </div>
   </body>
   <footer class="footer">
-      <p>
-        <strong>Sunni</strong> by <a href="#">Ewan Stott</a></a>.
-      </p>
+    <p><strong>Sunni</strong> by <a href="#">Ewan Stott</a>.</p>
   </footer>
 </html>

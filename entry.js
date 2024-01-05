@@ -1,3 +1,4 @@
+// import geoTiff from "https://cdn.jsdelivr.net/npm/geotiff@2.1.1/dist-browser/geotiff.min.js";
 import {
   initMap,
   getCurrentLocation,
@@ -17,9 +18,11 @@ import { displayStatsInDom } from "./utils.js";
 //DOM Refs
 const geoIconButton = document.getElementById("geo-icon-button");
 const rootRef = document.getElementById("root");
+const solarImageRef = document.getElementById("solarImage");
 // const searchRef = document.getElementById("search");
 const spinner = `<div class="lds-hourglass"></div>`;
 const showLocationButton = document.getElementById("showLocationButton");
+const showLocationButton2 = document.getElementById("showLocationButton2");
 const monthlyBillDropDown = document.getElementById("monthlyBill");
 const card1Container = document.getElementById("card1-container");
 const card2Container = document.getElementById("card2-container");
@@ -43,6 +46,14 @@ showLocationButton.addEventListener("click", async () => {
     console.error("Error:", error);
   }
 });
+showLocationButton2.addEventListener("click", async () => {
+  try {
+    await searchAddress(); // Update the map location based on the searched address
+    // await getSolarLocation();
+  } catch (error) {
+    console.error("Error:", error);
+  }
+});
 
 resetButton.addEventListener("click", () => {
   document.getElementById("addressInput").value = "";
@@ -55,10 +66,10 @@ resetButton.addEventListener("click", () => {
 //   // Get the selected value from the dropdown
 //   selectedMonthlyBill = parseFloat(e.target.value);
 // });
-let selectedMonthlyBill = 100;
+let selectedMonthlyBill = 100; //default value
 monthlyBillDropDown.addEventListener("change", (e) => {
   // Get the selected value from the dropdown
-  selectedMonthlyBill = parseFloat(e.target.value);
+  selectedMonthlyBill = e.target.value;
   // Check if selectedMonthlyBill is defined
   if (selectedMonthlyBill === undefined) {
     console.error("Selected monthly bill is not defined.");
@@ -76,7 +87,7 @@ export async function updateGetSolarFunctionsLatAndLon(position) {
 
     //call getSolarData with lat/lon
     getSolarData(lat, lon, selectedMonthlyBill, place);
-    console.log(place.formatted_address);
+
     //call searchAddress to update map
     // searchAddress();
   } catch (error) {
@@ -165,4 +176,86 @@ export async function getSolarData(lat, lon, selectedMonthlyBill, place) {
   }
 }
 
+//ATTEMT TO PULL IN SOLAR IMAGE
+async function solarHeatMapPull() {
+  const result2 = await axios.get(
+    `https://solar.googleapis.com/v1/dataLayers:get?location.latitude=37.4450&location.longitude=-122.1390&radiusMeters=100&view=FULL_LAYERS&requiredQuality=HIGH&pixelSizeMeters=0.5&key=AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8`
+  );
+  //replace coordinates with:
+  // ${latitude}
+  // ${longitude}
+
+  const annualFluxUrl = result2.data.annualFluxUrl;
+  const dsmUrl = result2.data.dsmUrl;
+  const maskUrl = result2.data.maskUrl;
+  const rgbUrl = result2.data.rgbUrl;
+
+  const apiKey = "AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8";
+  // const imageUrl = 'https://solar.googleapis.com/v1/geoTiff:get?id=1900bab84407651202730c5299c445c9-51337d58d8b828c2d96e1ecf01774d6d';
+
+  const urlWithApiKey = `${rgbUrl}&key=${apiKey}`;
+
+  const stringArray2 = [urlWithApiKey]; //annualFluxUrl, dsmUrl, maskUrl,
+
+  // Create an image element
+  const imgElement = document.createElement("img");
+
+  // Set the src attribute to the URL with API key
+  imgElement.src = urlWithApiKey;
+
+  // Append the image element to the document or a specific container
+  document.body.appendChild(imgElement);
+
+  // Example of using the geotiff library
+  const response = await fetch(
+    "https://solar.googleapis.com/v1/geoTiff:get?id=1900bab84407651202730c5299c445c9-c9a54ee9e4d77d74829698dba72e3abd&key=AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8"
+  );
+  const arrayBuffer = await response.arrayBuffer();
+
+  // Parse the GeoTIFF file
+  const tiff = await GeoTIFF.fromArrayBuffer(arrayBuffer);
+  const image = await tiff.getImage();
+
+  // Use the image data as needed
+  const imageData = await image.readRasters();
+  console.log(imageData);
+
+  // function displayStatsInDom2(stringArray2, solarImageRef) {
+  //   stringArray2.forEach((img) => {
+  //     const div = document.createElement("div");
+  //     div.innerHTML = img;
+
+  //     solarImageRef.appendChild(div);
+  //   });
+  // }
+
+  // function displayStatsInDom2(stringArray2, solarImageRef) {
+  //   stringArray2.forEach((imageUrl) => {
+  //     // Create an img element
+  //     const imgElement = document.createElement("img");
+
+  //     // Set the src attribute to the image URL
+  //     imgElement.src = imageUrl;
+
+  //     // Set any additional attributes or styles if needed
+  //     imgElement.alt = "Solar Image";
+  //     imgElement.style.width = "100%"; // Adjust the width if needed
+
+  //     // Create a div to hold the image
+  //     const div = document.createElement("div");
+
+  //     // Append the img element to the div
+  //     div.appendChild(imgElement);
+
+  //     // Append the div to the container (solarImageRef)
+  //     solarImageRef.appendChild(div);
+  //   });
+  // }
+
+  // displayStatsInDom2(stringArray2, solarImageRef);
+  // console.log(stringArray2);
+  // console.log(solarImageRef);
+}
+
+solarHeatMapPull();
 initMap();

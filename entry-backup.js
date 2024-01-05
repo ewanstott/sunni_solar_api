@@ -3,20 +3,30 @@ import {
   getCurrentLocation,
   searchAddress,
   addMarker,
+  resetMap,
 } from "./googleMapsUtils.js";
 import { getSolarLocation } from "./solarLocation.js";
+import {
+  calculateEnergyConsumption,
+  calculateEnergySaved,
+  calculateTotalSavings,
+} from "./costCalulations.js";
+import { displayStatsInDom } from "./utils.js";
 // import { energyConsumptionCalculations } from "./costCalulations.js";
 
 //DOM Refs
 const geoIconButton = document.getElementById("geo-icon-button");
 const rootRef = document.getElementById("root");
+const solarImageRef = document.getElementById("solarImage");
 // const searchRef = document.getElementById("search");
 const spinner = `<div class="lds-hourglass"></div>`;
 const showLocationButton = document.getElementById("showLocationButton");
-// const monthlyBill = document.getElementById("monthlyBill");
-// const getCurrentLocation = document.getElementById("getCurrentLocation");
+const showLocationButton2 = document.getElementById("showLocationButton2");
+const monthlyBillDropDown = document.getElementById("monthlyBill");
+const card1Container = document.getElementById("card1-container");
+const card2Container = document.getElementById("card2-container");
 
-//Event listener
+//Event listeners
 geoIconButton.addEventListener("click", async () => {
   try {
     await getCurrentLocation(); // pulls users location on map using current location from googleMapsUtils.js
@@ -30,23 +40,52 @@ geoIconButton.addEventListener("click", async () => {
 showLocationButton.addEventListener("click", async () => {
   try {
     await searchAddress(); // Update the map location based on the searched address
-    // await
     // await getSolarLocation();
   } catch (error) {
     console.error("Error:", error);
   }
 });
-// monthlyBill.addEventListener('')
+showLocationButton2.addEventListener("click", async () => {
+  try {
+    await searchAddress(); // Update the map location based on the searched address
+    // await getSolarLocation();
+  } catch (error) {
+    console.error("Error:", error);
+  }
+});
+
+resetButton.addEventListener("click", () => {
+  document.getElementById("addressInput").value = "";
+  resetMap();
+});
+
+// // Monthly bill dropdown change
+// let selectedMonthlyBill;
+// monthlyBillDropDown.addEventListener("change", (e) => {
+//   // Get the selected value from the dropdown
+//   selectedMonthlyBill = parseFloat(e.target.value);
+// });
+let selectedMonthlyBill = 100; //default value
+monthlyBillDropDown.addEventListener("change", (e) => {
+  // Get the selected value from the dropdown
+  selectedMonthlyBill = e.target.value;
+  // Check if selectedMonthlyBill is defined
+  if (selectedMonthlyBill === undefined) {
+    console.error("Selected monthly bill is not defined.");
+    return;
+  }
+});
 
 //ADD ERROR MESSAGE If data = undefined - sorry the solar imps haven’t got to your house house
 
 export async function updateGetSolarFunctionsLatAndLon(position) {
   try {
-    // const position = await getSolarLocation();
-    const lat = position[0].geometry.viewport.La.hi;
-    const lon = position[0].geometry.viewport.eb.hi;
+    const place = position[0];
+    const lat = position[0].geometry.location.lat();
+    const lon = position[0].geometry.location.lng();
+
     //call getSolarData with lat/lon
-    getSolarData(lon, lat);
+    getSolarData(lat, lon, selectedMonthlyBill, place);
 
     //call searchAddress to update map
     // searchAddress();
@@ -55,62 +94,67 @@ export async function updateGetSolarFunctionsLatAndLon(position) {
   }
 }
 
-export async function getSolarData(latitude, longitude) {
+export async function getSolarData(lat, lon, selectedMonthlyBill, place) {
   //spinner
   rootRef.innerHTML = spinner;
-
+  let latitude, longitude;
+  let costOfElectricity = 0.28;
   try {
-    const data = await getSolarLocation();
-    // const calculations = await energyConsumptionCalculations(); //temp
-
-    const { latitude, longitude } = data.coords;
+    if (!lat || !lon) {
+      const data = await getSolarLocation();
+      latitude = data.coords.latitude;
+      longitude = data.coords.longitude;
+    } else {
+      latitude = lat;
+      longitude = lon;
+    }
 
     const result = await axios.get(
       `https://solar.googleapis.com/v1/buildingInsights:findClosest?location.latitude=${latitude}&location.longitude=${longitude}&key=AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8`
     );
-    console.log(result);
-    // Show address/location in DOM here:
-    //add code
 
-    //ENERGY CONSUMPTION
-    //user input
-    const monthlyBill = 100;
-    // Cost of electricity per kWh
-    const costOfElectricity = 0.28; //average UK 2024
-    // Calulate estimated Household Energy Consumption
-    const monthlyKWhEnergyConsumption = monthlyBill / costOfElectricity;
-    // Calculate annual energy consumption
-    const annualKWhEnergyConsumption = monthlyKWhEnergyConsumption * 12;
-    // Calculate annual costs
-    const annualCost = annualKWhEnergyConsumption * costOfElectricity; //1200
+    // if (!result.data || !result.data.solarPotential) {
+    //   //   throw new Error("No solar data available for this location");
+    //   rootRef.innerHTML = `Uh-oh! ${
+    //     err.message || "Something went wrong."
+    //   } Please try again later.`;
+    // }
 
-    //ENERGY SAVED BY INSTALLING SOLAR PANELS
-    const yearlyEnergyDcKwh =
-      result.data.solarPotential.maxArrayPanelsCount * 257; //70*257 = 17990
-    // max panel count * 257 (avg. yearlyEnergyDcKwh) //required - yearlyEnergyDcKwh / Panel count. How much solar energy a layout captures over the course of a year
-    const annualSavings = yearlyEnergyDcKwh * costOfElectricity; // 17990 * 0.28 = 5,037.2
+    // ENERGY CONSUMPTION CALCULATIONS
+    const {
+      monthlyKWhEnergyConsumption,
+      annualKWhEnergyConsumption,
+      annualCost,
+    } = calculateEnergyConsumption(selectedMonthlyBill, costOfElectricity);
+    // ENERGY SAVINGS CALCULATIONS
+    const { yearlyEnergyDcKwh, annualSavings } = calculateEnergySaved(
+      result.data.solarPotential.maxArrayPanelsCount,
+      costOfElectricity
+    );
 
-    //TOTALS
-    const totalSavings = annualCost - annualSavings;
+    // TOTAL SAVINGS CALCULATION
+    const totalSavings = calculateTotalSavings(annualCost, annualSavings);
 
     //store strings in array:
-    const calculationsComplete = `<strong>✅ Calculations Complete. Your roof data: </strong>`; //try adding ${location}
-    const maxSunshine = `<strong>🌞 Hours of usable sunlight per year: </strong> ${Math.floor(
+    //card1
+    const calculationsComplete = `<div class="card1"> <strong>✅ Calculations Complete. Your roof data for: ${place.formatted_address} </strong></div>`;
+    const maxSunshine = `<div class="card1"> 🌞 Hours of usable sunlight per year: <strong> ${Math.floor(
       result.data.solarPotential.maxSunshineHoursPerYear
-    )}`;
-    const maxArea = `<strong>⚡ Maximum area of solar panels your roof can support:</strong> ${Math.floor(
+    )}</strong></div>`;
+    const maxArea = `<div class="card1"> ⚡ Maximum area of solar panels your roof can support:<strong> ${Math.floor(
       result.data.solarPotential.wholeRoofStats.areaMeters2
-    )} m2`;
-    const totalSavingsOver20Years = `<strong>🤑 If you install solar panels on your roof, your estimated Total Savings over 20 Years: </strong> £${Math.abs(
-      Math.floor(totalSavings * 20)
-    )}`;
-
-    const carsEquivalent = `<strong>🚗 Estimated cars taken off the road:</strong> ${Math.floor(
+    )} m2 </strong></div>`;
+    const totalSavingsOver20Years = `<div class="card1"> 🤑 If you install solar panels on your roof, your estimated Total Savings over 20 Years: <strong> £${Math.abs(
+      totalSavings * 20
+    )}</strong></div><br>`;
+    //card2
+    const carsEquivalent = `<div class="card2"><strong>Environmental Impact of Installing Solar Panels on your Roof:</strong></div>
+    <div class="card2">🚗 Estimated cars taken off the road (for 1 yr): <strong>${Math.floor(
       result.data.solarPotential.carbonOffsetFactorKgPerMwh / 4.6
-    )}`;
-    const treesEquivalent = `<strong>🌲 Estimated tree seedlings grown:</strong> ${Math.floor(
+    )}</strong></div>`;
+    const treesEquivalent = `<div class="card2">🌲 Estimated tree seedlings grown (for 10 years):<strong> ${Math.floor(
       result.data.solarPotential.carbonOffsetFactorKgPerMwh / 0.0602
-    )}`;
+    )}</strong></div>`;
 
     //Array to store strings
     const stringArray = [
@@ -121,23 +165,14 @@ export async function getSolarData(latitude, longitude) {
       carsEquivalent,
       treesEquivalent,
     ];
+
     //clear spinner
     rootRef.innerHTML = "";
 
-    // Function to display strings in the DOM
-    function displayStatsInDom() {
-      //for loop to add each string as a p
-      //   for (let i = 0; i < stringArray.length; i++)
-      stringArray.forEach((str) => {
-        const paragraph = document.createElement("p"); // creates a new HTML paragraph element (<p>).
-        paragraph.innerHTML = str; //sets the text content of the paragraph element to the current string (str) from the array.
-        rootRef.appendChild(paragraph); //appends the new paragraph to the rootRef
-      });
-    }
-    displayStatsInDom();
+    displayStatsInDom(stringArray, rootRef);
   } catch (err) {
-    rootRef.innerHTML = `Uh-oh! It seems like CO2, the sneaky villain, has put our Solar API to sleep! 😱☀️ Don't worry, our superhero developers are on the case. Please try again later and let's show that CO2 who's boss! 💪🌍 #CO2VSVictory`;
+    rootRef.innerHTML = `Uh-oh! It seems like there is no solar data available for this location yet!`;
   }
 }
-// getSolarData();
+
 initMap();
