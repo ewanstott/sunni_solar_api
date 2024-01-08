@@ -18,6 +18,33 @@
     ></script>
 
     <script type="module" src="entry.js" defer></script>
+
+    <script>
+      const { fromUrl } = geotiff;
+
+      const url =
+        "https://solar.googleapis.com/v1/solar/geoTiff:get?id=fbde33e9cd16d5fd10d19a19dc580bc1-8614f599c5c264553f821cd034d5cf32&key=AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8";
+
+      async function displayImageInImgTag() {
+        try {
+          // Fetch the GeoTIFF data from the  URL
+          const tiff = await fromUrl(url);
+
+          // Get  image from the GeoTIFF data
+          const image = await tiff.getImage();
+
+          // Get data URL of image
+          const imageDataUrl = await image.getDataUrl();
+
+          // Display image in an <img> tag
+          const imgElement = document.getElementById("geoTiffImage");
+          imgElement.src = imageDataUrl;
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
+      displayImageInImgTag();
+    </script>
   </head>
   <body>
     <div class="hero">
@@ -92,6 +119,8 @@
         </button>
       </div>
       <div id="root"></div>
+      <div id="geotiffContainer"></div>
+      <img id="geoTiffImage" alt="GeoTIFF Image" />
       <!-- <div id="solarImage"></div> -->
       <!-- <div id="image-container"></div>
       <script src="imageimport.js"></script> -->
