@@ -5,12 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SUNNI - Saving the planet, one sunbeam at a time</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/geotiff"></script>
-
-    <!-- <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
-    /> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/geotiff"></script> -->
     <link rel="stylesheet" href="style.css" />
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8&libraries=places&callback=initMap"
@@ -66,9 +61,6 @@
           />
         </button>
       </div>
-      <!-- <button class="button is-light is-primary is-focused">
-        Show Location
-      </button> -->
       <div class="button-container">
         <button type="button" id="showLocationButton">
           <strong>Show Location</strong>
@@ -88,15 +80,6 @@
     <div id="details"></div>
 
     <div class="solar-facts">
-      <!-- <h2>Your Solar Stats:</h2> -->
-
-      <!-- <div class="prompt">
-        <h5>
-          Please enable location services or enter your address to get
-          started...
-        </h5>
-      </div> -->
-
       <div class="questions">
         <p>
           To help us fine tune your information, please enter your
@@ -119,11 +102,6 @@
         </button>
       </div>
       <div id="root"></div>
-      <div id="geotiffContainer"></div>
-      <img id="geoTiffImage" alt="GeoTIFF Image" />
-      <!-- <div id="solarImage"></div> -->
-      <!-- <div id="image-container"></div>
-      <script src="imageimport.js"></script> -->
     </div>
   </body>
   <footer class="footer">

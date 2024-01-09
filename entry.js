@@ -1,9 +1,7 @@
-// import geoTiff from "https://cdn.jsdelivr.net/npm/geotiff@2.1.1/dist-browser/geotiff.min.js";
 import {
   initMap,
   getCurrentLocation,
   searchAddress,
-  addMarker,
   resetMap,
 } from "./googleMapsUtils.js";
 import { getSolarLocation } from "./solarLocation.js";
@@ -13,19 +11,16 @@ import {
   calculateTotalSavings,
 } from "./costCalulations.js";
 import { displayStatsInDom } from "./utils.js";
-// import { energyConsumptionCalculations } from "./costCalulations.js";
 
 //DOM Refs
 const geoIconButton = document.getElementById("geo-icon-button");
 const rootRef = document.getElementById("root");
-const solarImageRef = document.getElementById("solarImage");
+// const solarImageRef = document.getElementById("solarImage");
 // const searchRef = document.getElementById("search");
 const spinner = `<div class="lds-hourglass"></div>`;
 const showLocationButton = document.getElementById("showLocationButton");
 const showLocationButton2 = document.getElementById("showLocationButton2");
 const monthlyBillDropDown = document.getElementById("monthlyBill");
-const card1Container = document.getElementById("card1-container");
-const card2Container = document.getElementById("card2-container");
 
 //Event listeners
 geoIconButton.addEventListener("click", async () => {
@@ -60,12 +55,6 @@ resetButton.addEventListener("click", () => {
   resetMap();
 });
 
-// // Monthly bill dropdown change
-// let selectedMonthlyBill;
-// monthlyBillDropDown.addEventListener("change", (e) => {
-//   // Get the selected value from the dropdown
-//   selectedMonthlyBill = parseFloat(e.target.value);
-// });
 let selectedMonthlyBill = 100; //default value
 monthlyBillDropDown.addEventListener("change", (e) => {
   // Get the selected value from the dropdown
@@ -76,8 +65,6 @@ monthlyBillDropDown.addEventListener("change", (e) => {
     return;
   }
 });
-
-//ADD ERROR MESSAGE If data = undefined - sorry the solar imps haven’t got to your house house
 
 export async function updateGetSolarFunctionsLatAndLon(position) {
   try {
@@ -111,15 +98,8 @@ export async function getSolarData(lat, lon, selectedMonthlyBill, place) {
     }
 
     const result = await axios.get(
-      `xhttps://solar.googleapis.com/v1/buildingInsights:findClosest?location.latitude=${latitude}&location.longitude=${longitude}&key=AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8`
+      `https://solar.googleapis.com/v1/buildingInsights:findClosest?location.latitude=${latitude}&location.longitude=${longitude}&key=AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8`
     );
-
-    // if (!result.data || !result.data.solarPotential) {
-    //   //   throw new Error("No solar data available for this location");
-    //   rootRef.innerHTML = `Uh-oh! ${
-    //     err.message || "Something went wrong."
-    //   } Please try again later.`;
-    // }
 
     // ENERGY CONSUMPTION CALCULATIONS
     const {
@@ -175,29 +155,4 @@ export async function getSolarData(lat, lon, selectedMonthlyBill, place) {
     rootRef.innerHTML = `Uh-oh! It seems like there is no solar data available for this location yet!`;
   }
 }
-
-//ATTEMT TO PULL IN SOLAR IMAGE
-async function solarHeatMapPull() {
-  const result2 = await axios.get(
-    `https://solar.googleapis.com/v1/dataLayers:get?location.latitude=37.4450&location.longitude=-122.1390&radiusMeters=100&view=FULL_LAYERS&requiredQuality=HIGH&pixelSizeMeters=0.5&key=AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8`
-  );
-  //replace coordinates with:
-  // ${latitude}
-  // ${longitude}
-
-  const annualFluxUrl = result2.data.annualFluxUrl;
-  const dsmUrl = result2.data.dsmUrl;
-  const maskUrl = result2.data.maskUrl;
-  const rgbUrl = result2.data.rgbUrl;
-  console.log(rgbUrl);
-
-  const apiKey = "AIzaSyBBffGwsbP78ar-9dHLg11HFFpTJk-9Ux8";
-  // const imageUrl = 'https://solar.googleapis.com/v1/geoTiff:get?id=1900bab84407651202730c5299c445c9-51337d58d8b828c2d96e1ecf01774d6d';
-
-  const urlWithApiKey = `${rgbUrl}&key=${apiKey}`;
-
-  const stringArray2 = [urlWithApiKey]; //annualFluxUrl, dsmUrl, maskUrl,
-}
-
-solarHeatMapPull();
 initMap();
