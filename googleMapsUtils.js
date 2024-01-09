@@ -5,13 +5,6 @@ import { getSolarData } from "./entry.js";
 let map; // Declare the map variable
 let marker; // Declare the marker variable
 
-// export function initMap() {
-//   map = new google.maps.Map(document.getElementById("map"), {
-//     zoom: 10,
-//     center: { lat: 51.5074, lng: -0.1278 }, // Default center (London)
-//   });
-// }
-
 export function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 10,
