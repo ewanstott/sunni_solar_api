@@ -22,25 +22,25 @@ const showLocationButton = document.getElementById("showLocationButton");
 const showLocationButton2 = document.getElementById("showLocationButton2");
 const monthlyBillDropDown = document.getElementById("monthlyBill");
 
-// Function to get location on page load
-async function getLocationOnLoad() {
-  try {
-    await getCurrentLocation();
-    await getSolarLocation();
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
-
-// Call the function on page load
-window.addEventListener("load", getLocationOnLoad);
-
 //Event listeners
-// GeoButton
+
+// // Call the function on page load
+// window.addEventListener("load", getLocationOnLoad);
+
+// // Function to get location on page load
+// async function getLocationOnLoad() {
+//   try {
+//     await getCurrentLocation();
+//     await getSolarLocation();
+//   } catch (error) {
+//     console.error("Error:", error);
+//   }
+// }
+
 geoIconButton.addEventListener("click", async () => {
   try {
     await getCurrentLocation(); // pulls users location on map using current location from googleMapsUtils.js
-    await getSolarLocation(); //pull solar data for users current position
+    await getSolarLocation(); //pull solar data for users current position // DONT THINK THIS IS USED ??
   } catch (error) {
     console.error("Error:", error);
   }
@@ -58,7 +58,7 @@ showLocationButton.addEventListener("click", async () => {
 showLocationButton2.addEventListener("click", async () => {
   try {
     await searchAddress(); // Update the map location based on the searched address
-    // await getSolarLocation();
+    await getSolarLocation();
   } catch (error) {
     console.error("Error:", error);
   }
@@ -169,5 +169,5 @@ export async function getSolarData(lat, lon, selectedMonthlyBill, place) {
     rootRef.innerHTML = `Uh-oh! It seems like there is no solar data available for this location yet! Please try searching again using the search bar above.`;
   }
 }
-getSolarLocation();
+// getSolarLocation();
 initMap();
