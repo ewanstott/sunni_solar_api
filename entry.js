@@ -22,7 +22,21 @@ const showLocationButton = document.getElementById("showLocationButton");
 const showLocationButton2 = document.getElementById("showLocationButton2");
 const monthlyBillDropDown = document.getElementById("monthlyBill");
 
+// Function to get location on page load
+async function getLocationOnLoad() {
+  try {
+    await getCurrentLocation();
+    await getSolarLocation();
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+// Call the function on page load
+window.addEventListener("load", getLocationOnLoad);
+
 //Event listeners
+// GeoButton
 geoIconButton.addEventListener("click", async () => {
   try {
     await getCurrentLocation(); // pulls users location on map using current location from googleMapsUtils.js
@@ -152,7 +166,8 @@ export async function getSolarData(lat, lon, selectedMonthlyBill, place) {
 
     displayStatsInDom(stringArray, rootRef);
   } catch (err) {
-    rootRef.innerHTML = `Uh-oh! It seems like there is no solar data available for this location yet!`;
+    rootRef.innerHTML = `Uh-oh! It seems like there is no solar data available for this location yet! Please try searching again using the search bar above.`;
   }
 }
+getSolarLocation();
 initMap();
