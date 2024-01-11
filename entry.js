@@ -19,9 +19,11 @@ const rootRef = document.getElementById("root");
 // const searchRef = document.getElementById("search");
 const spinner = `<div class="lds-hourglass"></div>`;
 const showLocationButton = document.getElementById("showLocationButton");
-const showLocationButton2 = document.getElementById("showLocationButton2");
+const customizeResultsButton = document.getElementById(
+  "customizeResultsButton"
+);
 const monthlyBillDropDown = document.getElementById("monthlyBill");
-
+let userSearched = false;
 //Event listeners
 
 // // Call the function on page load
@@ -37,38 +39,6 @@ const monthlyBillDropDown = document.getElementById("monthlyBill");
 //   }
 // }
 
-geoIconButton.addEventListener("click", async () => {
-  try {
-    await getCurrentLocation(); // pulls users location on map using current location from googleMapsUtils.js
-    await getSolarLocation(); //pull solar data for users current position // DONT THINK THIS IS USED ??
-  } catch (error) {
-    console.error("Error:", error);
-  }
-});
-
-//showLocationButton to call getSolarData with updated lat / lon
-showLocationButton.addEventListener("click", async () => {
-  try {
-    await searchAddress(); // Update the map location based on the searched address
-    // await getSolarLocation();
-  } catch (error) {
-    console.error("Error:", error);
-  }
-});
-showLocationButton2.addEventListener("click", async () => {
-  try {
-    await searchAddress(); // Update the map location based on the searched address
-    await getSolarLocation();
-  } catch (error) {
-    console.error("Error:", error);
-  }
-});
-
-resetButton.addEventListener("click", () => {
-  document.getElementById("addressInput").value = "";
-  resetMap();
-});
-
 let selectedMonthlyBill = 100; //default value
 monthlyBillDropDown.addEventListener("change", (e) => {
   // Get the selected value from the dropdown
@@ -80,6 +50,42 @@ monthlyBillDropDown.addEventListener("change", (e) => {
   }
 });
 
+geoIconButton.addEventListener("click", async () => {
+  try {
+    rootRef.innerHTML = spinner;
+    await getCurrentLocation(); // pulls users location on map using current location from googleMapsUtils.js
+    rootRef.innerHTML = "";
+  } catch (error) {
+    console.error("Error:", error);
+  }
+});
+
+//showLocationButton to call getSolarData with updated lat / lon
+showLocationButton.addEventListener("click", async () => {
+  try {
+    userSearched = true;
+    await searchAddress(); // Update the map location based on the searched address
+  } catch (error) {
+    console.error("Error:", error);
+  }
+});
+customizeResultsButton.addEventListener("click", async () => {
+  try {
+    if (userSearched) {
+      await searchAddress();
+    } else {
+      await getCurrentLocation();
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+});
+
+resetButton.addEventListener("click", () => {
+  document.getElementById("addressInput").value = "";
+  resetMap();
+});
+
 export async function updateGetSolarFunctionsLatAndLon(position) {
   try {
     const place = position[0];
@@ -88,9 +94,6 @@ export async function updateGetSolarFunctionsLatAndLon(position) {
 
     //call getSolarData with lat/lon
     getSolarData(lat, lon, selectedMonthlyBill, place);
-
-    //call searchAddress to update map
-    // searchAddress();
   } catch (error) {
     console.error("Error getting location:", error);
   }
@@ -169,5 +172,4 @@ export async function getSolarData(lat, lon, selectedMonthlyBill, place) {
     rootRef.innerHTML = `Uh-oh! It seems like there is no solar data available for this location yet! Please try searching again using the search bar above.`;
   }
 }
-// getSolarLocation();
 initMap();

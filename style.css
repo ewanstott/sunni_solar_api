@@ -70,7 +70,7 @@
   align-items: center;
 }
 #showLocationButton,
-#showLocationButton2 {
+#customizeResultsButton {
   margin: 0 2.5px;
   background-color: #5cdb5c;
   color: white;
@@ -86,6 +86,11 @@
   padding: 7px;
   cursor: pointer;
   transition: transform 0.3s ease;
+}
+#loading-message {
+  margin-top: 10px;
+  font-weight: bold;
+  text-align: center;
 }
 
 #search {

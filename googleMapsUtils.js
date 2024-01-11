@@ -4,8 +4,11 @@ import { updateGetSolarFunctionsLatAndLon } from "./entry.js";
 //Google Documentation Code:
 let map; // Declare the map variable
 let marker; // Declare the marker variable
+let loadingMessageRef = document.getElementById("loading-message");
+// let userSearched = false;
 
 export async function initMap() {
+  loadingMessageRef.innerHTML = "Loading location data...";
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 10,
     center: { lat: 51.5074, lng: -0.1278 }, // Default center (London)
@@ -30,6 +33,7 @@ export async function initMap() {
     } else {
       console.error("Invalid place details");
     }
+    loadingMessageRef.innerHTML = "";
   });
 
   // Automatically get the user's location on page load
@@ -38,14 +42,6 @@ export async function initMap() {
   } catch (error) {
     console.error("Error getting current location on page load:", error);
   }
-
-  // getCurrentLocation()
-  //   .then(() => {
-  //     // Handle success if needed
-  //   })
-  //   .catch((error) => {
-  //     console.error("Error getting current location on page load:", error);
-  //   });
 }
 
 export function getCurrentLocation() {
@@ -68,6 +64,7 @@ export function getCurrentLocation() {
             if (status === "OK" && results[0]) {
               updateGetSolarFunctionsLatAndLon(results);
               resolve();
+              loadingMessageRef.innerHTML = "";
             } else {
               console.error(
                 "Geocode was not successful for the current location:",
@@ -97,13 +94,12 @@ export function searchAddress() {
     if (status === "OK" && results[0].geometry) {
       const location = results[0].geometry.location;
       map.setCenter(location);
-      map.setZoom(18); // You can adjust the zoom level
-
+      map.setZoom(18);
       // Add a marker for the searched address
       addMarker(location);
-      //   updateGetSolarFunctionsLatAndLon(location);
+      userSearched = true;
 
-      updateGetSolarFunctionsLatAndLon(results);
+      updateGetSolarFunctionsLatAndLon(results, userSearched);
     } else {
       console.error(
         "Geocode was not successful for the following reason:",
@@ -126,9 +122,7 @@ export function addMarker(location) {
     title: "Selected Location",
   });
 }
-
+//Reset map
 export function resetMap() {
   location.reload();
 }
-
-// initMap();
