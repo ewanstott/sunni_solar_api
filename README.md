@@ -1,4 +1,4 @@
-**SOLAR API PROJECT**
+**SOLAR API PROJECT** | https://sunni-solar-energy-checker.netlify.app/
 -----------------------------------------------
 **Brief:** 
 Make a website using APIs and vanilla JS. Project done whilst completing the jump digital's full-stack course.
